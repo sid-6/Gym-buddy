@@ -70,19 +70,10 @@ export async function saveGoalAction(goal: string) {
   redirect(routes.home);
 }
 
-export async function forgotPasswordAction(formData: FormData) {
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) return { error: "No account found for that email." };
-  const token = `${user.id}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
-  await prisma.passwordReset.create({
-    data: {
-      userId: user.id,
-      token,
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
-    },
-  });
-  return { resetPath: `${routes.resetPassword}?token=${encodeURIComponent(token)}` };
+export async function forgotPasswordAction(_formData: FormData) {
+  return {
+    error: "Password reset is temporarily unavailable. Please contact support.",
+  };
 }
 
 export async function resetPasswordAction(formData: FormData) {
