@@ -24,7 +24,7 @@ async function userIdFromToken(token: string | undefined) {
   if (Number(exp) < Date.now()) return null;
   const key = await crypto.subtle.importKey(
     "raw",
-    new TextEncoder().encode(process.env.AUTH_SECRET || "dev-only-change-me"),
+    new TextEncoder().encode(process.env.AUTH_SECRET),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"],

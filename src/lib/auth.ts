@@ -3,7 +3,11 @@ import { createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypt
 const COOKIE = "gb_session";
 
 function secret() {
-  return process.env.AUTH_SECRET || "dev-only-change-me";
+  if (!process.env.AUTH_SECRET) {
+  throw new Error("AUTH_SECRET is not configured");
+}
+
+return process.env.AUTH_SECRET;
 }
 
 export function hashPassword(password: string) {
